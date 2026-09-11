@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Istighfar Counter</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #071b16, #0d3328);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 25px;
+      padding: 35px 20px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.35);
+    }
+
+    .moon {
+      font-size: 42px;
+      margin-bottom: 5px;
+    }
+
+    h1 {
+      margin: 5px 0;
+      font-size: 30px;
+    }
+
+    .subtitle {
+      color: #c8d8d2;
+      margin-bottom: 30px;
+    }
+
+    .arabic {
+      font-size: 35px;
+      margin: 20px 0 10px;
+      direction: rtl;
+    }
+
+    .meaning {
+      color: #c8d8d2;
+      margin-bottom: 25px;
+    }
+
+    .count {
+      font-size: 58px;
+      font-weight: bold;
+      margin: 10px 0 25px;
+    }
+
+    .counter-button {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      border: 5px solid rgba(255,255,255,0.25);
+      background: #ffffff;
+      color: #0d3328;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      transition: 0.15s;
+    }
+
+    .counter-button:active {
+      transform: scale(0.94);
+    }
+
+    .reset {
+      margin-top: 25px;
+      padding: 10px 25px;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 20px;
+      background: transparent;
+      color: white;
+      cursor: pointer;
+    }
+
+    .global {
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 18px;
+      background: rgba(0,0,0,0.18);
+    }
+
+    .global-title {
+      font-size: 16px;
+      color: #c8d8d2;
+    }
+
+    .global-count {
+      font-size: 32px;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+
+    .footer {
+      margin-top: 20px;
+      font-size: 13px;
+      color: #aebdb8;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="card">
+
+      <div class="moon">🌙</div>
+
+      <h1>Istighfar Counter</h1>
+
+      <div class="subtitle">
+        Count your Istighfar & Dhikr
+      </div>
+
+      <div class="arabic">
+        أَسْتَغْفِرُ اللهَ
+      </div>
+
+      <div class="meaning">
+        Astaghfirullah
+      </div>
+
+      <div class="count" id="count">
+        0
+      </div>
+
+      <button class="counter-button" onclick="addCount()">
+        +1
+      </button>
+
+      <br>
+
+      <button class="reset" onclick="resetCount()">
+        Reset
+      </button>
+
+      <div class="global">
+
+        <div class="global-title">
+          🌍 Worldwide Istighfar
+        </div>
+
+        <div class="global-count" id="globalCount">
+          0
+        </div>
+
+      </div>
+
+      <div class="footer">
+        May Allah accept our remembrance.
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    let count = 0;
+
+    function addCount() {
+      count++;
+      document.getElementById("count").innerText = count;
+    }
+
+    function resetCount() {
+      count = 0;
+      document.getElementById("count").innerText = count;
+    }
+
+  </script>
+
+</body>
+  </html>
