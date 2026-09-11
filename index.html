@@ -1,200 +1,993 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Istighfar Counter</title>
+<title>Dhikr Portal | Digital Tasbeeh</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #071b16, #0d3328);
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
+:root{
+  --bg1:#061813;
+  --bg2:#0c3025;
+  --card:rgba(255,255,255,.08);
+  --border:rgba(255,255,255,.16);
+  --text:#ffffff;
+  --muted:#b9ccc5;
+  --gold:#e7bd63;
+  --green:#19a77a;
+  --button:#ffffff;
+  --buttonText:#0a3025;
+}
 
-    .container {
-      width: 100%;
-      max-width: 500px;
-      text-align: center;
-    }
+body.light{
+  --bg1:#eef8f4;
+  --bg2:#d8eee5;
+  --card:rgba(255,255,255,.72);
+  --border:rgba(0,70,50,.15);
+  --text:#12352b;
+  --muted:#527067;
+  --button:#12352b;
+  --buttonText:#ffffff;
+}
 
-    .card {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 25px;
-      padding: 35px 20px;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.35);
-    }
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:Arial,"Noto Sans Bengali",sans-serif;
+  background:linear-gradient(135deg,var(--bg1),var(--bg2));
+  color:var(--text);
+  padding:18px;
+  transition:.4s;
+}
 
-    .moon {
-      font-size: 42px;
-      margin-bottom: 5px;
-    }
+.container{
+  width:100%;
+  max-width:560px;
+  margin:auto;
+}
 
-    h1 {
-      margin: 5px 0;
-      font-size: 30px;
-    }
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:28px;
+  padding:25px 18px;
+  box-shadow:0 20px 50px rgba(0,0,0,.28);
+  backdrop-filter:blur(14px);
+}
 
-    .subtitle {
-      color: #c8d8d2;
-      margin-bottom: 30px;
-    }
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:15px;
+}
 
-    .arabic {
-      font-size: 35px;
-      margin: 20px 0 10px;
-      direction: rtl;
-    }
+.logo{
+  font-size:14px;
+  color:var(--gold);
+  font-weight:bold;
+  letter-spacing:.5px;
+}
 
-    .meaning {
-      color: #c8d8d2;
-      margin-bottom: 25px;
-    }
+.settings{
+  display:flex;
+  gap:7px;
+}
 
-    .count {
-      font-size: 58px;
-      font-weight: bold;
-      margin: 10px 0 25px;
-    }
+.icon-btn{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.07);
+  color:var(--text);
+  cursor:pointer;
+  font-size:18px;
+}
 
-    .counter-button {
-      width: 180px;
-      height: 180px;
-      border-radius: 50%;
-      border: 5px solid rgba(255,255,255,0.25);
-      background: #ffffff;
-      color: #0d3328;
-      font-size: 24px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-      transition: 0.15s;
-    }
+.moon{
+  font-size:42px;
+  margin-top:5px;
+}
 
-    .counter-button:active {
-      transform: scale(0.94);
-    }
+h1{
+  margin:7px 0;
+  font-size:29px;
+}
 
-    .reset {
-      margin-top: 25px;
-      padding: 10px 25px;
-      border: 1px solid rgba(255,255,255,0.3);
-      border-radius: 20px;
-      background: transparent;
-      color: white;
-      cursor: pointer;
-    }
+.subtitle{
+  color:var(--muted);
+  font-size:14px;
+  margin-bottom:22px;
+}
 
-    .global {
-      margin-top: 30px;
-      padding: 20px;
-      border-radius: 18px;
-      background: rgba(0,0,0,0.18);
-    }
+.selector{
+  width:100%;
+  padding:14px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:rgba(0,0,0,.18);
+  color:var(--text);
+  font-size:16px;
+  outline:none;
+}
 
-    .global-title {
-      font-size: 16px;
-      color: #c8d8d2;
-    }
+.selector option{
+  color:#111;
+  background:white;
+}
 
-    .global-count {
-      font-size: 32px;
-      font-weight: bold;
-      margin-top: 8px;
-    }
+.custom-box{
+  display:none;
+  margin-top:10px;
+}
 
-    .footer {
-      margin-top: 20px;
-      font-size: 13px;
-      color: #aebdb8;
-    }
-  </style>
+.custom-box input,
+.target-custom input{
+  width:100%;
+  padding:13px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.08);
+  color:var(--text);
+  outline:none;
+}
+
+.arabic{
+  font-size:34px;
+  line-height:1.8;
+  margin:22px 0 4px;
+  direction:rtl;
+}
+
+.meaning{
+  color:var(--muted);
+  font-size:15px;
+}
+
+.reference{
+  margin:15px 0;
+  padding:12px;
+  border-radius:14px;
+  background:rgba(231,189,99,.09);
+  border:1px solid rgba(231,189,99,.22);
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.7;
+}
+
+.target-area{
+  margin-top:20px;
+}
+
+.target-title{
+  font-size:14px;
+  color:var(--muted);
+  margin-bottom:9px;
+}
+
+.target-buttons{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.target-btn{
+  flex:1;
+  min-width:70px;
+  padding:10px 8px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.07);
+  color:var(--text);
+  cursor:pointer;
+}
+
+.target-btn.active{
+  background:var(--gold);
+  color:#172014;
+  border-color:var(--gold);
+  font-weight:bold;
+}
+
+.target-custom{
+  display:none;
+  margin-top:9px;
+}
+
+.progress-wrap{
+  margin-top:20px;
+}
+
+.progress-info{
+  display:flex;
+  justify-content:space-between;
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:7px;
+}
+
+.progress{
+  width:100%;
+  height:10px;
+  background:rgba(255,255,255,.1);
+  border-radius:20px;
+  overflow:hidden;
+}
+
+.progress-bar{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,var(--green),var(--gold));
+  border-radius:20px;
+  transition:.3s;
+}
+
+.count{
+  font-size:60px;
+  font-weight:bold;
+  margin:20px 0 18px;
+}
+
+.counter-button{
+  width:190px;
+  height:190px;
+  border-radius:50%;
+  border:7px solid rgba(231,189,99,.35);
+  background:var(--button);
+  color:var(--buttonText);
+  font-size:25px;
+  font-weight:bold;
+  cursor:pointer;
+  box-shadow:0 12px 35px rgba(0,0,0,.3);
+  transition:.12s;
+  user-select:none;
+}
+
+.counter-button:active{
+  transform:scale(.93);
+}
+
+.action-row{
+  display:flex;
+  justify-content:center;
+  gap:9px;
+  flex-wrap:wrap;
+  margin-top:22px;
+}
+
+.action{
+  padding:10px 16px;
+  border-radius:20px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.07);
+  color:var(--text);
+  cursor:pointer;
+}
+
+.danger{
+  border-color:rgba(255,80,80,.35);
+}
+
+.features{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:22px;
+}
+
+.feature{
+  padding:14px;
+  border-radius:16px;
+  background:rgba(0,0,0,.13);
+  border:1px solid var(--border);
+}
+
+.feature-title{
+  font-size:13px;
+  color:var(--muted);
+}
+
+.feature-value{
+  font-size:17px;
+  font-weight:bold;
+  margin-top:5px;
+}
+
+.hadith{
+  margin-top:20px;
+  padding:18px;
+  border-radius:18px;
+  background:rgba(25,167,122,.09);
+  border:1px solid rgba(25,167,122,.2);
+  text-align:left;
+}
+
+.hadith h3{
+  margin:0 0 10px;
+  font-size:17px;
+  color:var(--gold);
+}
+
+.hadith p{
+  margin:0;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.8;
+}
+
+.share{
+  width:100%;
+  margin-top:15px;
+  padding:13px;
+  border:0;
+  border-radius:14px;
+  background:var(--gold);
+  color:#172014;
+  font-weight:bold;
+  cursor:pointer;
+  font-size:15px;
+}
+
+.footer{
+  margin-top:20px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.7;
+}
+
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:25px;
+  transform:translateX(-50%) translateY(80px);
+  background:#102c23;
+  color:white;
+  padding:12px 18px;
+  border-radius:25px;
+  opacity:0;
+  transition:.3s;
+  z-index:20;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
+.celebrate{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:30;
+}
+
+.piece{
+  position:absolute;
+  top:40%;
+  font-size:22px;
+  animation:fall 1.8s linear forwards;
+}
+
+@keyframes fall{
+  from{
+    transform:translateY(0) rotate(0deg);
+    opacity:1;
+  }
+  to{
+    transform:translateY(70vh) rotate(500deg);
+    opacity:0;
+  }
+}
+
+@media(max-width:400px){
+  .card{
+    padding:22px 14px;
+  }
+
+  .counter-button{
+    width:165px;
+    height:165px;
+  }
+
+  .arabic{
+    font-size:29px;
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <div class="container">
+<div class="container">
 
-    <div class="card">
+<div class="card">
 
-      <div class="moon">🌙</div>
+<div class="topbar">
+<div class="logo">☪ DHIKR PORTAL</div>
 
-      <h1>Istighfar Counter</h1>
+<div class="settings">
+<button class="icon-btn" onclick="toggleTheme()" id="themeBtn">☀️</button>
+<button class="icon-btn" onclick="toggleSound()" id="soundBtn">🔊</button>
+</div>
+</div>
 
-      <div class="subtitle">
-        Count your Istighfar & Dhikr
-      </div>
+<div class="moon">🌙</div>
 
-      <div class="arabic">
-        أَسْتَغْفِرُ اللهَ
-      </div>
+<h1>Digital Tasbeeh</h1>
 
-      <div class="meaning">
-        Astaghfirullah
-      </div>
+<div class="subtitle">
+জিকির করুন, আল্লাহকে স্মরণ করুন
+</div>
 
-      <div class="count" id="count">
-        0
-      </div>
+<select class="selector" id="dhikrSelect" onchange="changeDhikr()">
 
-      <button class="counter-button" onclick="addCount()">
-        +1
-      </button>
+<option value="astaghfirullah">Astaghfirullah</option>
+<option value="subhanallah">Subhanallah</option>
+<option value="alhamdulillah">Alhamdulillah</option>
+<option value="allahuakbar">Allahu Akbar</option>
+<option value="durood">Durood Sharif</option>
+<option value="custom">✍️ Custom Dhikr</option>
 
-      <br>
+</select>
 
-      <button class="reset" onclick="resetCount()">
-        Reset
-      </button>
+<div class="custom-box" id="customBox">
+<input type="text" id="customDhikr" placeholder="আপনার নিজের জিকির লিখুন">
+</div>
 
-      <div class="global">
+<div class="arabic" id="arabic">
+أَسْتَغْفِرُ اللهَ
+</div>
 
-        <div class="global-title">
-          🌍 Worldwide Istighfar
-        </div>
+<div class="meaning" id="meaning">
+Astaghfirullah
+</div>
 
-        <div class="global-count" id="globalCount">
-          0
-        </div>
+<div class="reference" id="reference">
+অর্থ: আমি আল্লাহর কাছে ক্ষমা প্রার্থনা করছি।
+</div>
 
-      </div>
+<div class="target-area">
 
-      <div class="footer">
-        May Allah accept our remembrance.
-      </div>
+<div class="target-title">🎯 লক্ষ্য নির্বাচন করুন</div>
 
-    </div>
+<div class="target-buttons">
 
-  </div>
+<button class="target-btn active" onclick="setTarget(33,this)">33</button>
+<button class="target-btn" onclick="setTarget(100,this)">100</button>
+<button class="target-btn" onclick="setTarget(1000,this)">1000</button>
+<button class="target-btn" onclick="showCustomTarget(this)">Custom</button>
 
+</div>
 
-  <script>
+<div class="target-custom" id="targetCustom">
+<input type="number" id="customTarget" min="1" placeholder="নিজের লক্ষ্য লিখুন">
+</div>
 
-    let count = 0;
+</div>
 
-    function addCount() {
-      count++;
-      document.getElementById("count").innerText = count;
-    }
+<div class="progress-wrap">
 
-    function resetCount() {
-      count = 0;
-      document.getElementById("count").innerText = count;
-    }
+<div class="progress-info">
+<span>Progress</span>
+<span id="percentage">0%</span>
+</div>
 
-  </script>
+<div class="progress">
+<div class="progress-bar" id="progressBar"></div>
+</div>
+
+</div>
+
+<div class="count" id="count">0</div>
+
+<button class="counter-button" onclick="addCount()">
++1
+</button>
+
+<div class="action-row">
+
+<button class="action danger" onclick="resetCount()">
+↻ Reset
+</button>
+
+<button class="action" onclick="undoCount()">
+↩ Undo
+</button>
+
+<button class="action" onclick="toggleVibration()" id="vibrationBtn">
+📳 Vibration ON
+</button>
+
+</div>
+
+<div class="features">
+
+<div class="feature">
+<div class="feature-title">🎯 Target</div>
+<div class="feature-value" id="targetDisplay">33</div>
+</div>
+
+<div class="feature">
+<div class="feature-title">📅 Today's Total</div>
+<div class="feature-value" id="dailyTotal">0</div>
+</div>
+
+</div>
+
+<button class="share" onclick="shareProgress()">
+📤 Share Today's Progress
+</button>
+
+<div class="hadith">
+
+<h3>📖 ফজিলত ও স্মরণ</h3>
+
+<p id="hadithText">
+রাসূলুল্লাহ ﷺ বলেছেন, “যে ব্যক্তি প্রতিদিন একশ বার ‘সুবহানাল্লাহি ওয়া বিহামদিহি’ বলে, তার গুনাহসমূহ মাফ করা হয়, যদিও তা সমুদ্রের ফেনার মতো হয়।”
+<br><br>
+সহিহ বুখারি ও সহিহ মুসলিম
+</p>
+
+</div>
+
+<div class="footer">
+এই ডিজিটাল কাউন্টার ব্যক্তিগত জিকিরের হিসাব রাখার জন্য।<br>
+আল্লাহ আমাদের জিকির কবুল করুন। আমীন।
+</div>
+
+</div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="celebrate" id="celebrate"></div>
+
+<script>
+
+const dhikrs = {
+
+astaghfirullah:{
+arabic:"أَسْتَغْفِرُ اللهَ",
+meaning:"Astaghfirullah",
+reference:"অর্থ: আমি আল্লাহর কাছে ক্ষমা প্রার্থনা করছি।",
+hadith:"আবু হুরাইরা (রাঃ) থেকে বর্ণিত, নবী ﷺ বলেছেন, “আল্লাহর কসম! আমি দিনে সত্তরেরও বেশি বার আল্লাহর কাছে ক্ষমা চাই এবং তওবা করি।” — সহিহ বুখারি, ৬৩০৭"
+},
+
+subhanallah:{
+arabic:"سُبْحَانَ اللهِ",
+meaning:"Subhanallah",
+reference:"অর্থ: আল্লাহ পবিত্র ও সকল ত্রুটি থেকে মুক্ত।",
+hadith:"রাসূলুল্লাহ ﷺ বলেছেন, “যে ব্যক্তি দিনে একশ বার ‘সুবহানাল্লাহি ওয়া বিহামদিহি’ বলে, তার গুনাহসমূহ মাফ করা হয়, যদিও তা সমুদ্রের ফেনার মতো হয়।” — সহিহ বুখারি, ৬৪০৫; সহিহ মুসলিম, ২৬৯১"
+},
+
+alhamdulillah:{
+arabic:"الْحَمْدُ لِلَّهِ",
+meaning:"Alhamdulillah",
+reference:"অর্থ: সমস্ত প্রশংসা আল্লাহর জন্য।",
+hadith:"রাসূলুল্লাহ ﷺ বলেছেন, “আলহামদুলিল্লাহ মীযানকে পূর্ণ করে।” — সহিহ মুসলিম, ২২৩"
+},
+
+allahuakbar:{
+arabic:"اللَّهُ أَكْبَرُ",
+meaning:"Allahu Akbar",
+reference:"অর্থ: আল্লাহ সর্বশ্রেষ্ঠ।",
+hadith:"রাসূলুল্লাহ ﷺ বলেছেন, “দুটি বাক্য জিহ্বায় হালকা, মীযানে ভারী এবং পরম দয়ালুর কাছে প্রিয়: সুবহানাল্লাহি ওয়া বিহামদিহি, সুবহানাল্লাহিল আযীম।” — সহিহ বুখারি, ৬৪০৬; সহিহ মুসলিম, ২৬৯৪"
+},
+
+durood:{
+arabic:"صَلَّى اللّٰهُ عَلَيْهِ وَسَلَّمَ",
+meaning:"Durood Sharif",
+reference:"নবী মুহাম্মদ ﷺ-এর প্রতি দরুদ ও সালাম পাঠ।",
+hadith:"আল্লাহর রাসূল ﷺ বলেছেন, “যে ব্যক্তি আমার ওপর একবার দরুদ পাঠ করে, আল্লাহ তার ওপর দশবার রহমত প্রেরণ করেন।” — সহিহ মুসলিম, ৪০৮"
+},
+
+custom:{
+arabic:"আপনার জিকির",
+meaning:"Custom Dhikr",
+reference:"আপনার নিজের জিকির লিখুন।",
+hadith:"নিজের পছন্দের জিকির যুক্ত করে ব্যক্তিগতভাবে গণনা করতে পারবেন।"
+}
+
+};
+
+let currentDhikr="astaghfirullah";
+
+let data=JSON.parse(localStorage.getItem("dhikrPortalData")) || {};
+
+let settings=JSON.parse(localStorage.getItem("dhikrPortalSettings")) || {
+target:33,
+sound:true,
+vibration:true,
+theme:"dark"
+};
+
+function todayKey(){
+return new Date().toISOString().slice(0,10);
+}
+
+function getCurrent(){
+
+if(!data[currentDhikr]){
+data[currentDhikr]={
+count:0,
+target:settings.target
+};
+}
+
+return data[currentDhikr];
+}
+
+function save(){
+
+localStorage.setItem("dhikrPortalData",JSON.stringify(data));
+localStorage.setItem("dhikrPortalSettings",JSON.stringify(settings));
+
+}
+
+function updateUI(){
+
+let current=getCurrent();
+
+document.getElementById("count").innerText=current.count;
+
+document.getElementById("targetDisplay").innerText=current.target;
+
+let percent=Math.min((current.count/current.target)*100,100);
+
+document.getElementById("percentage").innerText=Math.floor(percent)+"%";
+
+document.getElementById("progressBar").style.width=percent+"%";
+
+document.getElementById("dailyTotal").innerText=getDailyTotal();
+
+}
+
+function getDailyTotal(){
+
+let total=0;
+
+Object.keys(data).forEach(key=>{
+
+if(key==="daily") return;
+
+if(data[key].daily && data[key].daily[todayKey()]){
+total+=data[key].daily[todayKey()];
+}
+
+});
+
+return total;
+
+}
+
+function addCount(){
+
+let current=getCurrent();
+
+current.count++;
+
+if(!current.daily){
+current.daily={};
+}
+
+let today=todayKey();
+
+current.daily[today]=(current.daily[today]||0)+1;
+
+if(settings.sound) playSound();
+
+if(settings.vibration && navigator.vibrate){
+navigator.vibrate(25);
+}
+
+if(current.count===current.target){
+
+celebrate();
+
+showToast("🎉 লক্ষ্য পূর্ণ হয়েছে! আলহামদুলিল্লাহ");
+
+}
+
+save();
+updateUI();
+
+}
+
+function undoCount(){
+
+let current=getCurrent();
+
+if(current.count>0){
+
+current.count--;
+
+let today=todayKey();
+
+if(current.daily && current.daily[today]>0){
+current.daily[today]--;
+}
+
+save();
+updateUI();
+
+}
+
+}
+
+function resetCount(){
+
+if(confirm("এই জিকিরের বর্তমান কাউন্ট ০ করে দিতে চান?")){
+
+let current=getCurrent();
+
+current.count=0;
+
+save();
+updateUI();
+
+showToast("কাউন্ট Reset হয়েছে");
+
+}
+
+}
+
+function changeDhikr(){
+
+currentDhikr=document.getElementById("dhikrSelect").value;
+
+let info=dhikrs[currentDhikr];
+
+document.getElementById("arabic").innerText=info.arabic;
+
+document.getElementById("meaning").innerText=info.meaning;
+
+document.getElementById("reference").innerText=info.reference;
+
+document.getElementById("hadithText").innerText=info.hadith;
+
+document.getElementById("customBox").style.display=
+currentDhikr==="custom" ? "block" : "none";
+
+updateUI();
+
+}
+
+function setTarget(value,button){
+
+settings.target=value;
+
+let current=getCurrent();
+
+current.target=value;
+
+document.querySelectorAll(".target-btn").forEach(btn=>{
+btn.classList.remove("active");
+});
+
+button.classList.add("active");
+
+document.getElementById("targetCustom").style.display="none";
+
+save();
+updateUI();
+
+}
+
+function showCustomTarget(button){
+
+document.querySelectorAll(".target-btn").forEach(btn=>{
+btn.classList.remove("active");
+});
+
+button.classList.add("active");
+
+document.getElementById("targetCustom").style.display="block";
+
+document.getElementById("customTarget").focus();
+
+}
+
+document.getElementById("customTarget").addEventListener("change",function(){
+
+let value=parseInt(this.value);
+
+if(value>0){
+
+settings.target=value;
+
+let current=getCurrent();
+
+current.target=value;
+
+save();
+updateUI();
+
+}
+
+});
+
+document.getElementById("customDhikr").addEventListener("input",function(){
+
+if(currentDhikr==="custom"){
+
+document.getElementById("arabic").innerText=this.value || "আপনার জিকির";
+
+document.getElementById("meaning").innerText=
+this.value || "Custom Dhikr";
+
+}
+
+});
+
+function toggleVibration(){
+
+settings.vibration=!settings.vibration;
+
+document.getElementById("vibrationBtn").innerText=
+settings.vibration ? "📳 Vibration ON" : "📴 Vibration OFF";
+
+save();
+
+}
+
+function toggleSound(){
+
+settings.sound=!settings.sound;
+
+document.getElementById("soundBtn").innerText=
+settings.sound ? "🔊" : "🔇";
+
+save();
+
+}
+
+function toggleTheme(){
+
+document.body.classList.toggle("light");
+
+settings.theme=document.body.classList.contains("light") ? "light":"dark";
+
+document.getElementById("themeBtn").innerText=
+settings.theme==="light" ? "🌙":"☀️";
+
+save();
+
+}
+
+function playSound(){
+
+try{
+
+const AudioContext=window.AudioContext||window.webkitAudioContext;
+
+const ctx=new AudioContext();
+
+const oscillator=ctx.createOscillator();
+
+const gain=ctx.createGain();
+
+oscillator.frequency.value=620;
+
+oscillator.type="sine";
+
+gain.gain.setValueAtTime(.08,ctx.currentTime);
+
+gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.08);
+
+oscillator.connect(gain);
+
+gain.connect(ctx.destination);
+
+oscillator.start();
+
+oscillator.stop(ctx.currentTime+.08);
+
+}catch(e){}
+
+}
+
+function celebrate(){
+
+const box=document.getElementById("celebrate");
+
+const symbols=["✨","🌙","⭐","💚","🎉"];
+
+for(let i=0;i<25;i++){
+
+let piece=document.createElement("div");
+
+piece.className="piece";
+
+piece.innerText=symbols[Math.floor(Math.random()*symbols.length)];
+
+piece.style.left=Math.random()*100+"%";
+
+piece.style.animationDelay=Math.random()*.5+"s";
+
+box.appendChild(piece);
+
+setTimeout(()=>piece.remove(),2200);
+
+}
+
+}
+
+function showToast(text){
+
+const toast=document.getElementById("toast");
+
+toast.innerText=text;
+
+toast.classList.add("show");
+
+setTimeout(()=>toast.classList.remove("show"),2200);
+
+}
+
+async function shareProgress(){
+
+let total=getDailyTotal();
+
+let current=getCurrent();
+
+let text=
+"🌙 Digital Tasbeeh\n\n"+
+"আজকের মোট জিকির: "+total+"\n"+
+"বর্তমান জিকির: "+current.count+"/"+current.target+"\n\n"+
+"আলহামদুলিল্লাহ 🤲";
+
+if(navigator.share){
+
+try{
+
+await navigator.share({
+title:"My Dhikr Progress",
+text:text
+});
+
+}catch(e){}
+
+}else{
+
+try{
+
+await navigator.clipboard.writeText(text);
+
+showToast("📋 Progress copied!");
+
+}catch(e){
+
+showToast("Share করা সম্ভব হচ্ছে না");
+
+}
+
+}
+
+}
+
+if(settings.theme==="light"){
+document.body.classList.add("light");
+document.getElementById("themeBtn").innerText="🌙";
+}
+
+if(!settings.vibration){
+document.getElementById("vibrationBtn").innerText="📴 Vibration OFF";
+}
+
+if(!settings.sound){
+document.getElementById("soundBtn").innerText="🔇";
+}
+
+updateUI();
+
+</script>
 
 </body>
   </html>
